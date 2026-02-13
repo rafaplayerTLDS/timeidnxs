@@ -236,11 +236,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            user-select: text;
         }
 
         .timestamp-code:hover {
             background: #333;
             transform: translateX(3px);
+        }
+
+        .timestamp-code span {
+            flex: 1;
+            cursor: pointer;
         }
 
         .timestamp-preview {
@@ -249,6 +255,13 @@
             padding: 8px;
             background: #0a0a0a;
             border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .timestamp-preview:hover {
+            background: #1a1a1a;
+            transform: translateX(3px);
         }
 
         .btn-copiar {
@@ -359,6 +372,7 @@
 
         <label>🎨 Selecione o Formato:</label>
         <select id="selectFormato">
+            <option value="R">⏱️ Tempo Relativo (em X / há X)</option>
             <option value="todos">📦 Todos os Formatos</option>
             <option value="t">⏰ Hora Curta (16:20)</option>
             <option value="T">⏰ Hora Longa (16:20:30)</option>
@@ -366,7 +380,6 @@
             <option value="D">📅 Data Longa (13 de fevereiro de 2026)</option>
             <option value="f">📆 Data e Hora Curta</option>
             <option value="F">📆 Data e Hora Longa</option>
-            <option value="R">⏱️ Tempo Relativo (em X / há X)</option>
         </select>
 
         <div class="quick-buttons">
@@ -392,7 +405,7 @@
             <div class="timestamp-item">
                 <div class="timestamp-label">Menção do Usuário</div>
                 <div class="timestamp-code">
-                    <span id="mencaoCode"></span>
+                    <span id="mencaoCode" onclick="copiarTexto('mencaoCode')"></span>
                     <button class="btn-copiar" onclick="event.stopPropagation(); copiarTexto('mencaoCode')">📋 Copiar</button>
                 </div>
             </div>
@@ -404,7 +417,7 @@
             <div class="timestamp-item">
                 <div class="timestamp-label">Mensagem Completa</div>
                 <div class="timestamp-code" style="white-space: pre-wrap; word-break: break-word;">
-                    <span id="mensagemCode"></span>
+                    <span id="mensagemCode" onclick="copiarTexto('mensagemCode')"></span>
                     <button class="btn-copiar" onclick="event.stopPropagation(); copiarTexto('mensagemCode')">📋 Copiar</button>
                 </div>
             </div>
@@ -548,10 +561,10 @@ function gerarTimestamps() {
         div.innerHTML = `
             <div class="timestamp-label">${formato.nome}</div>
             <div class="timestamp-code">
-                <span>${timestampCode}</span>
+                <span onclick="copiarTimestamp('${timestampCode.replace(/'/g, "\\'")}')">${timestampCode}</span>
                 <button class="btn-copiar" onclick="event.stopPropagation(); copiarTimestamp('${timestampCode.replace(/'/g, "\\'")}')">📋 Copiar</button>
             </div>
-            <div class="timestamp-preview">Preview: ${formato.exemplo}</div>
+            <div class="timestamp-preview" onclick="copiarTimestamp('${timestampCode.replace(/'/g, "\\'")}')" title="Clique para copiar">Preview: ${formato.exemplo}</div>
         `;
         lista.appendChild(div);
     });
